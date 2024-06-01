@@ -1,0 +1,15 @@
+.filter-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    background: #f0f0f0;
+    padding: 10px;
+    justify-content: space-between;
+  }
+  
+  .filter-container button {
+    margin-right: 20px;
+    cursor: pointer;
+    border: 1px solid transparent; /* Add transparent border */
+    border-radius: 4px; /* Add border radius */
+  }
