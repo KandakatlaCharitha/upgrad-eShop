@@ -1,15 +1,30 @@
+
 .filter-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    background: #f0f0f0;
-    padding: 10px;
-    justify-content: space-between;
-  }
-  
-  .filter-container button {
-    margin-right: 20px;
-    cursor: pointer;
-    border: 1px solid transparent; /* Add transparent border */
-    border-radius: 4px; /* Add border radius */
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.MuiToggleButton-root {
+  margin: 5px;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+.card-description {
+  margin-top: 10px;
+}
+
+.buy-button {
+  margin-top: 10px;
+}
