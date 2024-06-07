@@ -1,0 +1,17 @@
+.confirm-msg{
+    text-align: center;
+    margin: 10px;
+    justify-content: center;
+    color: rgb(50, 173, 218);
+   padding-top: 50px;
+   padding-bottom: 50px;
+}
+
+
+.confirm{
+    padding-top: 50px;
+    text-align: left;
+    margin: 10px;
+    justify-content: center;
+    padding-bottom: 50px;
+}

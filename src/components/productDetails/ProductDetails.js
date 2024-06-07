@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import "./ProductDetails.css"; // Import CSS for styling
 
@@ -7,6 +7,7 @@ function ProductDetails() {
   const { id } = useParams(); // Get the product ID from URL params
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -28,8 +29,8 @@ function ProductDetails() {
   }, [id]);
 
   const handleBuyNow = () => {
-    //  logic for purchasing the product
-    console.log(`Buying ${quantity} ${product.name}`);
+    // Redirect to create order page with product details
+    navigate(`/create-order/${id}/${quantity}`);
   };
 
   if (!product) {

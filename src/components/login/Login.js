@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthProvider, useAuth } from "../auth/AuthContext";
 import { Fragment } from "react";
 
@@ -25,8 +25,11 @@ function Login() {
       });
 
       if (response.ok) {
+        const token = response.headers.get("x-auth-token"); // Extract token from header
         const data = await response.json();
         login(data);
+        console.log(data);
+        localStorage.setItem("token", token); // Store token in localStorage
         navigate("/products");
       } else {
         const errorMessage = await response.text();
@@ -60,6 +63,9 @@ function Login() {
           <button type="submit" className="submit-button">
             Sign in
           </button>
+          <p>
+            Not a member? <Link to="/signup">Sign Up</Link>
+          </p>
           {error && <div className="error-message">{error}</div>}
         </form>
       </div>

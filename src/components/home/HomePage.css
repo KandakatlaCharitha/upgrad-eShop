@@ -1,22 +1,20 @@
-.home-container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
-  }
-  
-  .hero-section {
-    background-color: #f4f4f4;
-    padding: 50px;
-    text-align: center;
-  }
-  
-  .hero-section h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-  }
-  
-  .hero-section p {
-    font-size: 1.2rem;
-    margin-bottom: 40px;
-  }
-  
+.homepage {
+  background-size: cover;
+  background-position: center;
+  height: 100vh; 
+}
+
+.content {
+  text-align: center;
+  color: white; 
+  padding: 20px; 
+}
+
+h2 {
+  font-size: 2rem; 
+}
+
+p {
+  font-size: 1.2rem;
+  margin-top: 20px; 
+}
