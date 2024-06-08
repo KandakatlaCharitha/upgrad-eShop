@@ -10,6 +10,7 @@ import ProductDetails from "../productDetails/ProductDetails";
 import CreateOrder from "../orders/CreateOrder";
 import { SearchProvider } from "../context/SearchContext";
 import ManageProducts from "../manageProducts/ManageProducts";
+import AddProduct from "../addProducts/AddProduct.js";
 function App() {
   return (
     <Router>
@@ -27,6 +28,7 @@ function App() {
               element={<CreateOrder />}
             />
             <Route path="/manage-products" element={<ManageProducts />} />
+            <Route path="/add-products" element={<AddProduct />} />
           </Routes>
         </SearchProvider>
       </AuthProvider>

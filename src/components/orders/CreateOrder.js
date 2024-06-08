@@ -25,6 +25,7 @@ function CreateOrder() {
     street: "",
   });
   const [errors, setErrors] = useState({}); // State for storing validation errors
+  const [selectedAddress, setSelectedAddress] = useState(null); // State for selected address
   const navigate = useNavigate(); // Use the useNavigate hook for navigation
   const { isAuthenticated, user } = useAuth(); // Get the authentication state
   const [product, setProduct] = useState(null); // State for storing product details
@@ -61,11 +62,12 @@ function CreateOrder() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "x-auth-token": token, // Use the correct header field
+            "x-auth-token": token,
           },
           body: JSON.stringify({ ...address, user: user._id }),
         });
-
+        // console.log(address);
+        // console.log(selectedAddress);
         if (!response.ok) {
           const contentType = response.headers.get("content-type");
           let errorData;
@@ -82,6 +84,7 @@ function CreateOrder() {
         const data = await response.json();
         console.log("Address saved successfully:", data);
         setErrors({});
+        setSelectedAddress(data); // Update selectedAddress state with the newly created address
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       } catch (error) {
         console.error("Error saving address:", error);
@@ -91,7 +94,6 @@ function CreateOrder() {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
-
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
@@ -113,12 +115,12 @@ function CreateOrder() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Add authorization header
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           product: id,
-          quantity: parseInt(quantity), // Use the quantity from the URL parameter
-          address: address.id, // Use the saved address ID
+          quantity: parseInt(quantity),
+          address: selectedAddress, // Use the selectedAddress state instead of address.id
         }),
       });
 
@@ -145,7 +147,6 @@ function CreateOrder() {
       setErrors({ general: "An error occurred while placing the order" });
     }
   };
-
   return (
     <Box sx={{ maxWidth: 600, margin: "auto", mt: 5 }}>
       <Typography variant="h4" component="div" gutterBottom>
@@ -275,7 +276,11 @@ function CreateOrder() {
           </Typography>
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
             <Button onClick={handleBack}>Back</Button>
-            <Button onClick={handleNext} variant="contained" color="primary">
+            <Button
+              onClick={handleOrderSubmit}
+              variant="contained"
+              color="primary"
+            >
               Confirm and Place Order
             </Button>
           </Box>

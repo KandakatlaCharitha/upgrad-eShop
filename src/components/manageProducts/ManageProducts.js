@@ -22,20 +22,19 @@ function ManageProducts() {
   const [modifyDialogOpen, setModifyDialogOpen] = useState(false);
   const [modifiedProductName, setModifiedProductName] = useState("");
   const [modifiedProductPrice, setModifiedProductPrice] = useState("");
+  const [modifiedProductCategory, setModifiedProductCategory] = useState("");
+  const [modifiedProductManufacturer, setModifiedProductManufacturer] =
+    useState("");
+  const [modifiedProductDescription, setModifiedProductDescription] =
+    useState("");
+  const [modifiedProductImageURL, setModifiedProductImageURL] = useState("");
+  const [modifiedProductAvailableItems, setModifiedProductAvailableItems] =
+    useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [addProductDialogOpen, setAddProductDialogOpen] = useState(false);
-  const [newProductName, setNewProductName] = useState("");
-  const [newProductCategory, setNewProductCategory] = useState("");
-  const [newProductManufacturer, setNewProductManufacturer] = useState("");
-  const [newProductDescription, setNewProductDescription] = useState("");
-  const [newProductPrice, setNewProductPrice] = useState("");
-  const [newProductImageURL, setNewProductImageURL] = useState("");
-  const [newProductAvailableItems, setNewProductAvailableItems] = useState("");
 
-  // Define fetchProducts outside of useEffect
   const fetchProducts = async () => {
     try {
       const response = await fetch("http://localhost:3001/api/v1/products");
@@ -59,10 +58,15 @@ function ManageProducts() {
         }
       );
       if (response.ok) {
+        const deletedProduct = products.find(
+          (product) => product._id === selectedProductId
+        );
         setSuccessMessage(
           `Product with ID ${selectedProductId} deleted successfully`
         );
-        setSnackbarMessage(`Product deleted successfully`);
+        setSnackbarMessage(
+          `Product  ${deletedProduct.name} deleted successfully`
+        );
         setSnackbarOpen(true);
       } else {
         setErrorMessage(`Error deleting product with ID ${selectedProductId}`);
@@ -86,6 +90,11 @@ function ManageProducts() {
           body: JSON.stringify({
             name: modifiedProductName,
             price: modifiedProductPrice,
+            category: modifiedProductCategory,
+            manufacturer: modifiedProductManufacturer,
+            description: modifiedProductDescription,
+            imageURL: modifiedProductImageURL,
+            availableItems: modifiedProductAvailableItems,
           }),
         }
       );
@@ -93,7 +102,9 @@ function ManageProducts() {
         setSuccessMessage(
           `Product with ID ${selectedProductId} modified successfully`
         );
-        setSnackbarMessage(`Product modified successfully`);
+        setSnackbarMessage(
+          `Product ${modifiedProductName} modified successfully`
+        );
         setSnackbarOpen(true);
         fetchProducts();
       } else {
@@ -103,44 +114,6 @@ function ManageProducts() {
       setErrorMessage("Error modifying product:", error);
     } finally {
       setModifyDialogOpen(false);
-    }
-  };
-
-  const handleAddProduct = async () => {
-    try {
-      const newProductData = {
-        name: newProductName,
-        category: newProductCategory,
-        manufacturer: newProductManufacturer,
-        description: newProductDescription,
-        price: newProductPrice,
-        imageURL: newProductImageURL,
-        availableItems: newProductAvailableItems,
-      };
-
-      const token = localStorage.getItem("token"); // Assuming you store the token in localStorage
-
-      const response = await fetch("http://localhost:3001/api/v1/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token, // Include the token in the headers
-        },
-        body: JSON.stringify(newProductData),
-      });
-
-      if (response.ok) {
-        setSuccessMessage("Product added successfully");
-        setSnackbarMessage("Product added successfully");
-        setSnackbarOpen(true);
-        fetchProducts(); // Update the product list
-      } else {
-        setErrorMessage("Error adding product");
-      }
-    } catch (error) {
-      setErrorMessage("Error adding product:", error);
-    } finally {
-      setAddProductDialogOpen(false); // Close the dialog
     }
   };
 
@@ -201,16 +174,14 @@ function ManageProducts() {
                     setSelectedProductId(product._id);
                     setModifiedProductName(product.name);
                     setModifiedProductPrice(product.price);
+                    setModifiedProductCategory(product.category);
+                    setModifiedProductManufacturer(product.manufacturer);
+                    setModifiedProductDescription(product.description);
+                    setModifiedProductImageURL(product.imageURL);
+                    setModifiedProductAvailableItems(product.availableItems);
                   }}
                 >
                   Modify
-                </Button>
-                <Button
-                  variant="contained"
-                  style={{ backgroundColor: "#f0f0f0", color: "blue" }}
-                  onClick={() => setAddProductDialogOpen(true)}
-                >
-                  Add Product
                 </Button>
               </CardContent>
             </Card>
@@ -261,6 +232,41 @@ function ManageProducts() {
             fullWidth
             margin="normal"
           />
+          <TextField
+            label="Category"
+            value={modifiedProductCategory}
+            onChange={(e) => setModifiedProductCategory(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Manufacturer"
+            value={modifiedProductManufacturer}
+            onChange={(e) => setModifiedProductManufacturer(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Description"
+            value={modifiedProductDescription}
+            onChange={(e) => setModifiedProductDescription(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Image URL"
+            value={modifiedProductImageURL}
+            onChange={(e) => setModifiedProductImageURL(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Available Items"
+            value={modifiedProductAvailableItems}
+            onChange={(e) => setModifiedProductAvailableItems(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setModifyDialogOpen(false)} color="primary">
@@ -268,76 +274,6 @@ function ManageProducts() {
           </Button>
           <Button onClick={handleModify} color="primary">
             Modify
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Add Product Dialog */}
-      <Dialog
-        open={addProductDialogOpen}
-        onClose={() => setAddProductDialogOpen(false)}
-      >
-        <DialogTitle>Add New Product</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="Product Name"
-            value={newProductName}
-            onChange={(e) => setNewProductName(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Category"
-            value={newProductCategory}
-            onChange={(e) => setNewProductCategory(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Manufacturer"
-            value={newProductManufacturer}
-            onChange={(e) => setNewProductManufacturer(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Description"
-            value={newProductDescription}
-            onChange={(e) => setNewProductDescription(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Price"
-            value={newProductPrice}
-            onChange={(e) => setNewProductPrice(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Image URL"
-            value={newProductImageURL}
-            onChange={(e) => setNewProductImageURL(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Available Items"
-            value={newProductAvailableItems}
-            onChange={(e) => setNewProductAvailableItems(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => setAddProductDialogOpen(false)}
-            color="primary"
-          >
-            Cancel
-          </Button>
-          <Button onClick={handleAddProduct} color="primary">
-            Add
           </Button>
         </DialogActions>
       </Dialog>

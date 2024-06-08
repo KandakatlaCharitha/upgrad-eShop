@@ -30,7 +30,11 @@ function Login() {
         login(data);
         console.log(data);
         localStorage.setItem("token", token); // Store token in localStorage
-        navigate("/products");
+        if (data.isAdmin) {
+          navigate("/manage-products"); // Navigate to manage products page for admin
+        } else {
+          navigate("/products"); // Navigate to products page for regular user
+        }
       } else {
         const errorMessage = await response.text();
         setError(errorMessage);

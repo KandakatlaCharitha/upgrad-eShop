@@ -94,9 +94,11 @@ function Navbar() {
                 }
               }}
             />
-            <Button color="inherit" onClick={handleSearch}>
-              Search
-            </Button>
+            {!isAdmin && (
+              <Button color="inherit" onClick={handleSearch}>
+                Search
+              </Button>
+            )}
           </>
         )}
         {isAuthenticated ? (
@@ -105,7 +107,7 @@ function Navbar() {
               Home
             </Button>
             {isAdmin && (
-              <Button color="inherit" component={Link} to="/manage-products">
+              <Button color="inherit" component={Link} to="/add-products">
                 Add Products
               </Button>
             )}
